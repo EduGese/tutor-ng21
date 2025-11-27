@@ -1,25 +1,2 @@
 <h1> {{title()}}</h1>
-<div class="button-container">
-  @for(recipe of recipes; track recipe.id){
-    <button (click)="setRecipeDinamically(recipe)">{{recipe.name}}</button>
-  }
-</div>
-<div>
-  <h2>{{recipe().name}}</h2>
-  <h3>Ingredients:</h3>
-  @for(ingredient of adjustedIngredients(); track ingredient.name){
-  <li>
-    <span>{{ingredient.name}}:</span>
-    <span>{{ingredient.quantity}} {{ingredient.unit}}</span>
-  </li>
-  }
-  <h3>Description</h3>
-  {{recipe().description }}
-</div>
-<div>
-  <h2>Servings</h2>
-  <button (click)="incrementServigs()">Increment Servings</button>
-  <button (click)="decrementServigs()">Decrement Servings</button>
-  <div>{{servings()}}</div>
-
-</div>
+<app-recipe-list></app-recipe-list>

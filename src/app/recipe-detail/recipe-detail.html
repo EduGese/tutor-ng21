@@ -1,0 +1,34 @@
+@if (recipe(); as recipe) {
+  <div class="recipe-card">
+    <h2>{{recipe.name}}</h2>
+
+    <div class="main-content">
+      <div class="image-container">
+        <img [src]="recipe.imgUrl" [alt]="recipe.name">
+      </div>
+
+      <div class="details-container">
+        <h3>Description</h3>
+        <p>{{recipe.description}}</p>
+
+        <h3>Ingredients:</h3>
+        <ul>
+          @for(ingredient of adjustedIngredients(); track ingredient.name){
+          <li>
+            <span>{{ingredient.name}}:</span>
+            <span>{{ingredient.quantity}} {{ingredient.unit}}</span>
+          </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="servings-controls">
+      <h2>Servings: {{servings()}}</h2>
+      <div class="button-group">
+        <button (click)="incrementServigs()">+</button>
+        <button (click)="decrementServigs()">-</button>
+      </div>
+    </div>
+  </div>
+}
