@@ -1,11 +1,11 @@
 import { Component, computed, signal } from '@angular/core';
 import { MOCK_RECIPES } from '../mock-recipes';
 import { RecipeModel } from '../models';
-import { RecipeDetail } from '../recipe-detail/recipe-detail';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-list',
-  imports: [RecipeDetail, ],
+  imports: [ RouterModule],
   templateUrl: './recipe-list.html',
   styleUrl: './recipe-list.scss',
 })
@@ -14,7 +14,4 @@ export class RecipeList {
   protected readonly recipe = signal<RecipeModel>(this.recipes[0]);
 
 
-  protected setRecipe(recipe: RecipeModel) {
-    this.recipe.set(recipe)
-  }
 }

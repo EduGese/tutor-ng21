@@ -1,5 +1,7 @@
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { RecipeModel } from './../models';
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { MOCK_RECIPES } from '../mock-recipes';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -7,8 +9,9 @@ import { Component, computed, input, signal } from '@angular/core';
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.scss',
 })
-export class RecipeDetail {
-  readonly recipe = input.required<RecipeModel>();
+export class RecipeDetail implements OnInit{
+   protected readonly recipe = signal<RecipeModel | undefined>(undefined);
+  
   protected readonly servings = signal<number>(2);
   protected readonly adjustedIngredients = computed(() => {
     const currentRecipe = this.recipe();
@@ -21,6 +24,18 @@ export class RecipeDetail {
     })
   })
 
+  constructor(private route: ActivatedRoute){}
+
+ ngOnInit(): void {
+   const recipeIdParam = this.route.snapshot.paramMap.get('id');
+   const recipeId = recipeIdParam ? +recipeIdParam : null;
+   console.log("recipe Id:" , recipeId)
+
+   if (recipeId !== null) {
+     const foundRecipe = MOCK_RECIPES.find(r => r.id === recipeId);
+     this.recipe.set(foundRecipe);
+   }
+ }
 
 
   protected incrementServigs() {

@@ -1,8 +1,7 @@
 
 <div class="button-container">
   @for(recipe of recipes; track recipe.id){
-    <button  (click)="setRecipe(recipe)">{{recipe.name}}</button>
+    <button  [routerLink]="['/recipes', recipe.id]" >{{recipe.name}}</button>
   }
 </div>
 <div>
-<app-recipe-detail [recipe]="recipe()"></app-recipe-detail>
