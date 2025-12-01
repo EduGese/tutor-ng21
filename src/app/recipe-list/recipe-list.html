@@ -1,7 +1,8 @@
 
 <div class="button-container">
-  @for(recipe of recipes; track recipe.id){
-    <button  [routerLink]="['/recipes', recipe.id]" >{{recipe.name}}</button>
+  @for(recipe of recipes(); track recipe.id){
+    <button mat-button [routerLink]="['/recipes', recipe.id]" >{{recipe.name}}</button>
   }
 </div>
+<app-recipe-form></app-recipe-form>
 <div>

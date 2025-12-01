@@ -1,17 +1,18 @@
-import { Component, computed, signal } from '@angular/core';
-import { MOCK_RECIPES } from '../mock-recipes';
+import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { RecipeModel } from '../models';
 import { RouterModule } from '@angular/router';
+import { RecipeService } from '../services/recipe';
+import { RecipeForm } from '../recipe-form/recipe-form';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-recipe-list',
-  imports: [ RouterModule],
+  imports: [ RouterModule, RecipeForm, MatButtonModule],
   templateUrl: './recipe-list.html',
   styleUrl: './recipe-list.scss',
 })
 export class RecipeList {
-  protected readonly recipes = MOCK_RECIPES;
-  protected readonly recipe = signal<RecipeModel>(this.recipes[0]);
-
-
+  private readonly recipeService = inject(RecipeService)
+  protected  readonly recipes: Signal<RecipeModel[]> = this.recipeService.getRecipes();
+  
 }
