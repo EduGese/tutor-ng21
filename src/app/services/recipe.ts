@@ -1,4 +1,4 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { computed, Injectable, Signal, signal } from '@angular/core';
 import { RecipeModel } from '../models';
 
 @Injectable({
@@ -36,9 +36,14 @@ export class RecipeService {
   getRecipes():Signal<RecipeModel[]>{
     return this.recipes.asReadonly();
   }
-  getRecipeById(id: number): RecipeModel | undefined{
-    return this.recipes().find(recipe => recipe.id === id);
-  }
+   getRecipeById(recipeIdSignal: Signal<number>): Signal<RecipeModel | undefined> {   
+   return computed(() => {                                                          
+     const id = recipeIdSignal(); // Leemos el ID del signal de entrada             
+     // Leemos el valor actual del signal de todas las recetas                      
+     return this.recipes().find(recipe => recipe.id === id);                        
+   });                                                                              
+ }                                                                                  
+  
   addNewRecipe(recipe: {name: string, description: string}){
     const lastItemId = this.recipes().length > 0 ? this.recipes()[this.recipes().length-1].id : 0;
     const newRecipe = {

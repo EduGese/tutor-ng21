@@ -1,7 +1,7 @@
 import { RecipeService } from './../services/recipe';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeModel } from './../models';
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, Signal, signal } from '@angular/core';
 
 
 @Component({
@@ -10,11 +10,12 @@ import { Component, computed, inject, input, OnInit, signal } from '@angular/cor
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.scss',
 })
-export class RecipeDetail implements OnInit {
+export class RecipeDetail {
   private readonly recipeService = inject(RecipeService);
-  private readonly route = inject(ActivatedRoute)
+  private readonly route = inject(ActivatedRoute);
 
-  protected readonly recipe = signal<RecipeModel | undefined>(undefined);
+  private readonly recipeId = signal<number>(0);
+  protected readonly recipe: Signal<RecipeModel | undefined>;
 
   protected readonly servings = signal<number>(2);
   protected readonly adjustedIngredients = computed(() => {
@@ -28,16 +29,14 @@ export class RecipeDetail implements OnInit {
     })
   })
 
-  constructor() { }
+  constructor() {
+
+    this.recipe = this.recipeService.getRecipeById(this.recipeId);
+  }
 
   ngOnInit(): void {
-    const recipeIdParam = this.route.snapshot.paramMap.get('id');
-    const recipeId = recipeIdParam ? +recipeIdParam : null;
+   this.loadRecipe();
 
-    if (recipeId !== null) {
-      const foundRecipe = this.recipeService.getRecipeById(recipeId)
-      this.recipe.set(foundRecipe);
-    }
   }
 
 
@@ -50,4 +49,10 @@ export class RecipeDetail implements OnInit {
       return current - 1;
     })
   }
+
+ private loadRecipe(){
+   const recipeIdParam = this.route.snapshot.paramMap.get('id');
+    const recipeId = recipeIdParam ? +recipeIdParam : 0;
+    this.recipeId.set(recipeId);
+ }  
 }
